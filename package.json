@@ -13,18 +13,25 @@
     "run:ios": "npx cap run ios",
     "run:android": "npx cap run android"
   },
-  "keywords": ["grabb", "buelach", "news", "pwa", "capacitor"],
+  "keywords": [
+    "grabb",
+    "buelach",
+    "news",
+    "pwa",
+    "capacitor"
+  ],
   "author": "grabb.ch",
   "license": "MIT",
   "dependencies": {
     "@capacitor/android": "^8.1.0",
     "@capacitor/app": "^8.0.1",
-    "@capacitor/core": "^8.1.0",
     "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
     "@capacitor/ios": "^8.1.0",
     "@capacitor/keyboard": "^8.0.0",
     "@capacitor/network": "^8.0.1",
     "@capacitor/splash-screen": "^8.0.1",
-    "@capacitor/status-bar": "^8.0.1"
+    "@capacitor/status-bar": "^8.0.1",
+    "onesignal-cordova-plugin": "^5.3.1"
   }
 }

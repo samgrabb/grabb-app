@@ -1,0 +1,29 @@
+{
+  "name": "grabb-app",
+  "version": "1.0.0",
+  "description": "grabb.ch Mobile App - Lokale News für die Region Bülach",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Static files ready in www/'",
+    "sync": "npx cap sync",
+    "sync:ios": "npx cap sync ios",
+    "sync:android": "npx cap sync android",
+    "open:ios": "npx cap open ios",
+    "open:android": "npx cap open android",
+    "run:ios": "npx cap run ios",
+    "run:android": "npx cap run android"
+  },
+  "keywords": ["grabb", "buelach", "news", "pwa", "capacitor"],
+  "author": "grabb.ch",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/app": "^8.0.1",
+    "@capacitor/core": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
+    "@capacitor/keyboard": "^8.0.0",
+    "@capacitor/network": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.1"
+  }
+}

@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">#10b981</item>
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">#10b981</item>
-        
-        <!-- StatusBar IMMER sichtbar -->
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:fitsSystemWindows">true</item>
-        <item name="android:statusBarColor">#000000</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
-    <!-- Activity Theme - explizit KEIN Fullscreen -->
-    <style name="AppTheme.NoActionBar" parent="AppTheme">
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
     </style>
 
-    <!-- Splash Screen - wechselt zu AppTheme.NoActionBar -->
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="android:background">@drawable/splash</item>
-        <item name="android:statusBarColor">#000000</item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
     </style>
 
 </resources>

@@ -3,17 +3,10 @@ package ch.grabb.app;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
@@ -22,10 +15,6 @@ import android.webkit.WebView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.splashscreen.SplashScreen;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import com.getcapacitor.BridgeActivity;
 import com.onesignal.OneSignal;
 import com.onesignal.Continue;
@@ -43,69 +32,19 @@ public class MainActivity extends BridgeActivity {
     
     private ValueCallback<Uri[]> filePathCallback;
     private Uri cameraPhotoUri;
-    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // SplashScreen MUSS vor super.onCreate() installiert werden
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-        
         super.onCreate(savedInstanceState);
-        
-        // StatusBar SOFORT konfigurieren
-        forceStatusBarVisible();
-        
-        // Nochmal nach 500ms (falls Capacitor überschreibt)
-        handler.postDelayed(this::forceStatusBarVisible, 500);
-        
-        // Und nochmal nach 1500ms (nach Splash)
-        handler.postDelayed(this::forceStatusBarVisible, 1500);
         
         // Permissions anfragen
         requestPermissions();
         
-        // WebView Setup
+        // WebView Setup für Geolocation und Camera
         setupWebView();
         
         // OneSignal
         setupOneSignal();
-    }
-    
-    private void forceStatusBarVisible() {
-        Window window = getWindow();
-        View decorView = window.getDecorView();
-        
-        // ALLE Fullscreen-Flags entfernen
-        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        
-        // StatusBar zeichnen
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(Color.BLACK);
-        
-        // Content UNTER StatusBar (nicht dahinter)
-        WindowCompat.setDecorFitsSystemWindows(window, true);
-        
-        // System UI Flags - keine Versteck-Flags!
-        int flags = decorView.getSystemUiVisibility();
-        flags &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
-        flags &= ~View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        flags &= ~View.SYSTEM_UI_FLAG_IMMERSIVE;
-        flags &= ~View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        flags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; // Weisse Icons
-        decorView.setSystemUiVisibility(flags);
-        
-        // Für Android 11+ (API 30+)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, decorView);
-            if (controller != null) {
-                controller.show(WindowInsetsCompat.Type.statusBars());
-                controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_DEFAULT);
-                controller.setAppearanceLightStatusBars(false); // Weisse Icons
-            }
-        }
     }
     
     private void requestPermissions() {
@@ -234,22 +173,6 @@ public class MainActivity extends BridgeActivity {
             cameraPhotoUri = null;
         } else {
             super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-        // StatusBar bei jedem Resume erzwingen
-        forceStatusBarVisible();
-    }
-    
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            // Auch bei Fokus-Wechsel StatusBar erzwingen
-            forceStatusBarVisible();
         }
     }
     

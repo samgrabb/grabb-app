@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.GeolocationPermissions;
+import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import androidx.core.app.ActivityCompat;
@@ -22,64 +23,90 @@ public class MainActivity extends BridgeActivity {
     
     private static final String ONESIGNAL_APP_ID = "695cd630-8904-4044-962a-012f52f667ef";
     private static final int STATUSBAR_COLOR = Color.parseColor("#059669");
+    private static final int PERMISSION_REQUEST_CODE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // StatusBar VOR super.onCreate() konfigurieren!
-        configureStatusBar();
-        
         super.onCreate(savedInstanceState);
         
-        // Nochmal nach super.onCreate() setzen (falls Capacitor es überschreibt)
+        // StatusBar konfigurieren
         configureStatusBar();
         
+        // Permissions anfragen
+        requestPermissions();
+        
+        // WebView Setup
+        setupWebView();
+        
+        // OneSignal
         setupOneSignal();
-        requestLocationPermission();
-        setupWebViewGeolocation();
     }
     
-    private static final int LOCATION_PERMISSION_REQUEST = 1001;
-    
-    private void requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) 
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                },
-                LOCATION_PERMISSION_REQUEST);
+    private void requestPermissions() {
+        String[] permissions = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.CAMERA
+        };
+        
+        boolean needRequest = false;
+        for (String perm : permissions) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                needRequest = true;
+                break;
+            }
+        }
+        
+        if (needRequest) {
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
         }
     }
     
-    private void setupWebViewGeolocation() {
-        // WebView für Geolocation konfigurieren
+    private void setupWebView() {
         try {
             WebView webView = getBridge().getWebView();
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setGeolocationEnabled(true);
             webView.getSettings().setDomStorageEnabled(true);
+            webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+            webView.getSettings().setAllowFileAccess(true);
             
             webView.setWebChromeClient(new WebChromeClient() {
+                // Geolocation Permission
                 @Override
                 public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-                    // Automatisch Geolocation für grabb.ch erlauben
                     if (origin.contains("grabb.ch")) {
                         callback.invoke(origin, true, true);
                     } else {
                         callback.invoke(origin, false, false);
                     }
                 }
+                
+                // Camera/Microphone Permission (für WebRTC und input type=file capture)
+                @Override
+                public void onPermissionRequest(final PermissionRequest request) {
+                    runOnUiThread(() -> {
+                        String[] resources = request.getResources();
+                        for (String resource : resources) {
+                            if (PermissionRequest.RESOURCE_VIDEO_CAPTURE.equals(resource) ||
+                                PermissionRequest.RESOURCE_AUDIO_CAPTURE.equals(resource)) {
+                                // Kamera/Mikrofon erlauben
+                                request.grant(resources);
+                                return;
+                            }
+                        }
+                        request.deny();
+                    });
+                }
             });
         } catch (Exception e) {
-            System.err.println("WebView Geolocation setup failed: " + e.getMessage());
+            System.err.println("WebView setup failed: " + e.getMessage());
         }
     }
     
     @Override
     public void onResume() {
         super.onResume();
-        // Bei jedem Resume sicherstellen dass StatusBar korrekt ist
         configureStatusBar();
     }
     
@@ -87,30 +114,21 @@ public class MainActivity extends BridgeActivity {
         Window window = getWindow();
         View decorView = window.getDecorView();
         
-        // ALLE Fullscreen/Immersive Flags entfernen
+        // Flags setzen
         window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        
-        // StatusBar zeichnen
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(STATUSBAR_COLOR);
         
-        // Wichtig: Content UNTER (nicht hinter) der StatusBar
+        // Content unter StatusBar (nicht dahinter)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(true);
-        } else {
-            // Legacy: SystemUiVisibility zurücksetzen
-            decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_VISIBLE |
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            );
         }
         
-        // Helle Icons auf dunklem Hintergrund (API 23+)
+        // Weisse Icons auf dunklem Hintergrund
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int flags = decorView.getSystemUiVisibility();
-            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; // Entferne LIGHT flag = weisse Icons
+            flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             decorView.setSystemUiVisibility(flags);
         }
     }

@@ -15,7 +15,7 @@
     },
     "StatusBar": {
       "style": "LIGHT",
-      "backgroundColor": "#059669"
+      "backgroundColor": "#000000"
     }
   },
   "ios": {

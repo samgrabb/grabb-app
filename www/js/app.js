@@ -52,6 +52,15 @@ const App = {
                     console.warn('StatusBar init failed:', error);
                 }
             }
+            
+            // Links im WebView halten (nicht Chrome öffnen)
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a');
+                if (link && link.href && link.href.includes('grabb.ch')) {
+                    e.preventDefault();
+                    window.location.href = link.href;
+                }
+            });
         }
     },
 
@@ -161,7 +170,7 @@ const App = {
 
         list.innerHTML = this.posts.map(post => `
             <article class="news-item">
-                <a href="${post.url}" target="_blank">
+                <a href="${post.url}">
                     <img src="${post.thumbnail}" alt="" class="news-thumb" 
                          onerror="this.src='img/placeholder.png'">
                     <div class="news-content">
@@ -258,7 +267,7 @@ const App = {
                 marker.bindPopup(`
                     <b>${article.title}</b><br>
                     <small>${this.formatDate(new Date(article.date))}</small><br>
-                    <a href="${article.url}" target="_blank">Öffnen →</a>
+                    <a href="${article.url}">Öffnen →</a>
                 `);
             }
         });

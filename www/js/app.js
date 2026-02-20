@@ -42,6 +42,8 @@ const App = {
             
             if (StatusBar) {
                 try {
+                    // WICHTIG: Overlay deaktivieren - Content geht NICHT unter StatusBar
+                    await StatusBar.setOverlaysWebView({ overlay: false });
                     await StatusBar.setBackgroundColor({ color: '#10b981' });
                     await StatusBar.setStyle({ style: 'DARK' });
                     await StatusBar.show();

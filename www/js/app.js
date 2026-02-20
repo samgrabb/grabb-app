@@ -15,6 +15,9 @@ const App = {
     async init() {
         console.log('grabb.ch App starting...');
         
+        // Initialize Capacitor plugins
+        await this.initCapacitor();
+        
         // Setup tab navigation
         this.setupTabs();
         
@@ -28,6 +31,26 @@ const App = {
         await this.loadNews();
         
         console.log('App initialized');
+    },
+
+    /**
+     * Initialize Capacitor native plugins
+     */
+    async initCapacitor() {
+        if (window.Capacitor) {
+            const { StatusBar } = window.Capacitor.Plugins;
+            
+            if (StatusBar) {
+                try {
+                    await StatusBar.setBackgroundColor({ color: '#10b981' });
+                    await StatusBar.setStyle({ style: 'DARK' });
+                    await StatusBar.show();
+                    console.log('StatusBar initialized');
+                } catch (error) {
+                    console.warn('StatusBar init failed:', error);
+                }
+            }
+        }
     },
 
     /**

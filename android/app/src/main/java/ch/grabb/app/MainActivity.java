@@ -18,7 +18,7 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // StatusBar: Sichtbar mit SCHWARZEN Icons (für weissen Hintergrund)
+        // StatusBar konfigurieren
         setupStatusBar();
         
         // OneSignal
@@ -30,14 +30,14 @@ public class MainActivity extends BridgeActivity {
         Window window = getWindow();
         View decorView = window.getDecorView();
         
-        // StatusBar sichtbar (KEIN Fullscreen)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        
-        // Transparente StatusBar
+        // StatusBar-Hintergrund zeichnen lassen
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(Color.TRANSPARENT);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         
-        // SCHWARZE Icons auf hellem Hintergrund (LIGHT = dunkle Icons)
+        // WEISSER/TRANSPARENTER Hintergrund für StatusBar
+        window.setStatusBarColor(Color.WHITE);
+        
+        // SCHWARZE Icons (LIGHT_STATUS_BAR = dunkle Icons für hellen Hintergrund)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }

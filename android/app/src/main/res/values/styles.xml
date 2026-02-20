@@ -3,11 +3,12 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#10b981</item>
-        <item name="colorPrimaryDark">#059669</item>
+        <item name="colorPrimaryDark">#ffffff</item>
         <item name="colorAccent">#10b981</item>
-        <!-- KEIN Fullscreen - StatusBar sichtbar -->
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Android 15: Opt-out von Edge-to-Edge -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+        <!-- Weisse StatusBar mit schwarzen Icons -->
+        <item name="android:statusBarColor">#ffffff</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 

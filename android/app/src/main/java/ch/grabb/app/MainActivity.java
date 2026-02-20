@@ -36,7 +36,7 @@ public class MainActivity extends BridgeActivity {
     private static final int FILE_CHOOSER_REQUEST_CODE = 1002;
     
     private ValueCallback<Uri[]> filePathCallback;
-    private String cameraPhotoPath;
+    private Uri cameraPhotoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,11 +125,12 @@ public class MainActivity extends BridgeActivity {
                         }
                         
                         if (photoFile != null) {
-                            cameraPhotoPath = "file:" + photoFile.getAbsolutePath();
-                            Uri photoUri = FileProvider.getUriForFile(activity,
+                            cameraPhotoUri = FileProvider.getUriForFile(activity,
                                 getApplicationContext().getPackageName() + ".fileprovider",
                                 photoFile);
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraPhotoUri);
+                            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         } else {
                             takePictureIntent = null;
                         }
@@ -176,22 +177,18 @@ public class MainActivity extends BridgeActivity {
             
             Uri[] results = null;
             if (resultCode == RESULT_OK) {
-                if (data == null || data.getData() == null) {
+                if (data != null && data.getData() != null) {
+                    // Galerie wurde benutzt
+                    results = new Uri[]{data.getData()};
+                } else if (cameraPhotoUri != null) {
                     // Kamera wurde benutzt
-                    if (cameraPhotoPath != null) {
-                        results = new Uri[]{Uri.parse(cameraPhotoPath)};
-                    }
-                } else {
-                    // Datei wurde ausgewählt
-                    String dataString = data.getDataString();
-                    if (dataString != null) {
-                        results = new Uri[]{Uri.parse(dataString)};
-                    }
+                    results = new Uri[]{cameraPhotoUri};
                 }
             }
             
             filePathCallback.onReceiveValue(results);
             filePathCallback = null;
+            cameraPhotoUri = null;
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }

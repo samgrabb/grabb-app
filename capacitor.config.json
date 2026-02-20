@@ -14,8 +14,8 @@
       "showSpinner": false
     },
     "StatusBar": {
-      "style": "DARK",
-      "backgroundColor": "#10b981"
+      "style": "LIGHT",
+      "backgroundColor": "#059669"
     }
   },
   "ios": {

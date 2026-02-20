@@ -7,7 +7,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // StatusBar Style - helle Icons auf dunklem/grünem Hintergrund
+        if #available(iOS 13.0, *) {
+            // Für iOS 13+ wird der Style via UIViewController gesetzt
+        } else {
+            UIApplication.shared.statusBarStyle = .lightContent
+        }
         return true
     }
 

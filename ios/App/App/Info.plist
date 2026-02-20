@@ -47,5 +47,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
+	<key>NSCameraUsageDescription</key>
+	<string>grabb.ch benötigt Zugriff auf die Kamera um Fotos für Meldungen aufzunehmen.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>grabb.ch benötigt Zugriff auf die Fotobibliothek um Bilder hochzuladen.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>grabb.ch benötigt deinen Standort um Meldungen korrekt zuzuordnen.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>grabb.ch benötigt deinen Standort um Meldungen korrekt zuzuordnen.</string>
 </dict>
 </plist>

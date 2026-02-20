@@ -13,12 +13,17 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <!-- KRITISCH: Kein Fullscreen! StatusBar sichtbar halten -->
         <item name="android:windowFullscreen">false</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <!-- Content NICHT unter StatusBar schieben -->
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="android:background">@drawable/splash</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
 </resources>

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import com.getcapacitor.BridgeActivity;
 import com.onesignal.OneSignal;
 import com.onesignal.Continue;
@@ -15,48 +17,52 @@ public class MainActivity extends BridgeActivity {
     
     // OneSignal App ID (same as grabb.ch web)
     private static final String ONESIGNAL_APP_ID = "695cd630-8904-4044-962a-012f52f667ef";
+    
+    // grabb.ch Farben
+    private static final String STATUSBAR_COLOR = "#059669";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Fix Status Bar
+        // WICHTIG: StatusBar ZUERST konfigurieren
         setupStatusBar();
         
-        // Initialize OneSignal
+        // OneSignal initialisieren
         setupOneSignal();
     }
     
     private void setupStatusBar() {
         Window window = getWindow();
         
-        // Clear fullscreen flags
+        // Alle Fullscreen-Flags entfernen
         window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         
-        // Add status bar flags
+        // StatusBar-Flags setzen
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         
-        // Set status bar color (grabb.ch green)
-        window.setStatusBarColor(Color.parseColor("#059669"));
+        // StatusBar-Farbe setzen (grabb.ch grün)
+        window.setStatusBarColor(Color.parseColor(STATUSBAR_COLOR));
         
-        // Make sure content doesn't go behind status bar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(true);
-        } else {
-            View decorView = window.getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-        }
+        // Content NICHT unter StatusBar rendern
+        WindowCompat.setDecorFitsSystemWindows(window, true);
+        
+        // Dunkle Icons auf heller StatusBar (DARK = dunkle Icons)
+        View decorView = window.getDecorView();
+        WindowInsetsControllerCompat insetsController = new WindowInsetsControllerCompat(window, decorView);
+        insetsController.setAppearanceLightStatusBars(false); // false = helle Icons auf dunklem Hintergrund
     }
     
     private void setupOneSignal() {
-        // Enable verbose logging for debugging (remove in production)
+        // Verbose logging für Debugging
         OneSignal.getDebug().setLogLevel(LogLevel.VERBOSE);
         
-        // Initialize OneSignal
+        // OneSignal initialisieren
         OneSignal.initWithContext(this, ONESIGNAL_APP_ID);
         
-        // Request push notification permission
+        // Push-Berechtigung anfragen
         OneSignal.getNotifications().requestPermission(true, Continue.with(r -> {
             if (r.isSuccess()) {
                 if (r.getData()) {

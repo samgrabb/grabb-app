@@ -1,11 +1,18 @@
 package ch.grabb.app;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.GeolocationPermissions;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.getcapacitor.BridgeActivity;
 import com.onesignal.OneSignal;
 import com.onesignal.Continue;
@@ -27,6 +34,46 @@ public class MainActivity extends BridgeActivity {
         configureStatusBar();
         
         setupOneSignal();
+        requestLocationPermission();
+        setupWebViewGeolocation();
+    }
+    
+    private static final int LOCATION_PERMISSION_REQUEST = 1001;
+    
+    private void requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) 
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                },
+                LOCATION_PERMISSION_REQUEST);
+        }
+    }
+    
+    private void setupWebViewGeolocation() {
+        // WebView für Geolocation konfigurieren
+        try {
+            WebView webView = getBridge().getWebView();
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setGeolocationEnabled(true);
+            webView.getSettings().setDomStorageEnabled(true);
+            
+            webView.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                    // Automatisch Geolocation für grabb.ch erlauben
+                    if (origin.contains("grabb.ch")) {
+                        callback.invoke(origin, true, true);
+                    } else {
+                        callback.invoke(origin, false, false);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            System.err.println("WebView Geolocation setup failed: " + e.getMessage());
+        }
     }
     
     @Override

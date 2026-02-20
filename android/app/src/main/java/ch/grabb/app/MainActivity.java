@@ -1,7 +1,10 @@
 package ch.grabb.app;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import com.getcapacitor.BridgeActivity;
 import com.onesignal.OneSignal;
@@ -15,26 +18,28 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Fullscreen
-        getWindow().setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+        // StatusBar: Sichtbar mit SCHWARZEN Icons (für weissen Hintergrund)
+        setupStatusBar();
         
         // OneSignal
         OneSignal.getDebug().setLogLevel(LogLevel.VERBOSE);
         OneSignal.initWithContext(this, ONESIGNAL_APP_ID);
     }
     
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            );
+    private void setupStatusBar() {
+        Window window = getWindow();
+        View decorView = window.getDecorView();
+        
+        // StatusBar sichtbar (KEIN Fullscreen)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
+        // Transparente StatusBar
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(Color.TRANSPARENT);
+        
+        // SCHWARZE Icons auf hellem Hintergrund (LIGHT = dunkle Icons)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
 }

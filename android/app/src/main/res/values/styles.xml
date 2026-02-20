@@ -5,10 +5,10 @@
         <item name="colorPrimary">#10b981</item>
         <item name="colorPrimaryDark">#059669</item>
         <item name="colorAccent">#10b981</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <!-- Android 15+ Edge-to-Edge Opt-Out -->
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+        <!-- KEIN Fullscreen - StatusBar sichtbar -->
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

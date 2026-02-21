@@ -3,13 +3,13 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#10b981</item>
-        <item name="colorPrimaryDark">#ffffff</item>
+        <item name="colorPrimaryDark">#10b981</item>
         <item name="colorAccent">#10b981</item>
         <!-- Android 15: Opt-out von Edge-to-Edge -->
         <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
-        <!-- Weisse StatusBar mit schwarzen Icons -->
-        <item name="android:statusBarColor">#ffffff</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <!-- Grüne StatusBar mit weissen Icons -->
+        <item name="android:statusBarColor">#10b981</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

@@ -34,12 +34,12 @@ public class MainActivity extends BridgeActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         
-        // WEISSER/TRANSPARENTER Hintergrund für StatusBar
-        window.setStatusBarColor(Color.WHITE);
+        // GRÜNER Hintergrund für StatusBar (passend zu grabb.ch Header)
+        window.setStatusBarColor(Color.parseColor("#10b981"));
         
-        // SCHWARZE Icons (LIGHT_STATUS_BAR = dunkle Icons für hellen Hintergrund)
+        // WEISSE Icons (standard = helle Icons für dunklen Hintergrund)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            decorView.setSystemUiVisibility(0); // KEINE LIGHT_STATUS_BAR = weisse Icons
         }
     }
 }

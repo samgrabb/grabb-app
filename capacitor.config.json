@@ -13,10 +13,12 @@
       "backgroundColor": "#10b981",
       "showSpinner": false
     },
-    "StatusBar": {
-      "overlaysWebView": false,
-      "style": "DARK",
-      "backgroundColor": "#10b981"
+    "EdgeToEdge": {
+      "statusBarColor": "#10b981",
+      "navigationBarColor": "#ffffff"
+    },
+    "SystemBars": {
+      "insetsHandling": "disable"
     }
   },
   "ios": {

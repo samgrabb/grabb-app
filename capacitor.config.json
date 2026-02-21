@@ -14,7 +14,7 @@
       "showSpinner": false
     },
     "EdgeToEdge": {
-      "statusBarColor": "#10b981",
+      "statusBarColor": "#000000",
       "navigationBarColor": "#ffffff"
     },
     "SystemBars": {

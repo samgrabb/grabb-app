@@ -5,8 +5,8 @@
         <item name="colorPrimary">#10b981</item>
         <item name="colorPrimaryDark">#10b981</item>
         <item name="colorAccent">#10b981</item>
-        <!-- TEST: ROTE StatusBar um zu sehen ob es greift -->
-        <item name="android:statusBarColor">#FF0000</item>
+        <!-- Grüne StatusBar mit SCHWARZEN Icons -->
+        <item name="android:statusBarColor">#10b981</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

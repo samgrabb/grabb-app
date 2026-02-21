@@ -47,8 +47,8 @@ public class MainActivity extends BridgeActivity {
             // StatusBar zeichnen
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             
-            // GRÜN und UNDURCHSICHTIG
-            window.setStatusBarColor(Color.parseColor("#10b981"));
+            // TEST: ROT um zu sehen ob Code ausgeführt wird
+            window.setStatusBarColor(Color.parseColor("#FF0000"));
             
             // SCHWARZE Icons
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -5,9 +5,11 @@
         <item name="colorPrimary">#10b981</item>
         <item name="colorPrimaryDark">#10b981</item>
         <item name="colorAccent">#10b981</item>
-        <!-- Edge-to-Edge mit grüner StatusBar -->
+        <!-- Grüne StatusBar mit SCHWARZEN Icons -->
         <item name="android:statusBarColor">#10b981</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 

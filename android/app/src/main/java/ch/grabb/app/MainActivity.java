@@ -31,15 +31,17 @@ public class MainActivity extends BridgeActivity {
     private void setupEdgeToEdge() {
         Window window = getWindow();
         
-        // Edge-to-Edge Layout aktivieren
-        WindowCompat.setDecorFitsSystemWindows(window, false);
+        // KEIN Edge-to-Edge - System reserviert Platz für StatusBar
+        WindowCompat.setDecorFitsSystemWindows(window, true);
         
-        // StatusBar grün mit weißen Icons
+        // StatusBar als fester grüner Balken
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(Color.parseColor("#10b981"));
         
+        // Weisse Icons für grünen Hintergrund
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
-            // Weisse Icons (false = light icons für dunklen Hintergrund)
             controller.setAppearanceLightStatusBars(false);
         }
     }

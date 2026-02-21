@@ -18,31 +18,31 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // StatusBar ZUERST setzen, VOR super.onCreate()
+        setupStatusBarBeforeWebView();
         
-        // Edge-to-Edge aktivieren
-        setupEdgeToEdge();
+        super.onCreate(savedInstanceState);
         
         // OneSignal
         OneSignal.getDebug().setLogLevel(LogLevel.VERBOSE);
         OneSignal.initWithContext(this, ONESIGNAL_APP_ID);
     }
     
-    private void setupEdgeToEdge() {
+    private void setupStatusBarBeforeWebView() {
         Window window = getWindow();
         
-        // KEIN Edge-to-Edge - System reserviert Platz für StatusBar
-        WindowCompat.setDecorFitsSystemWindows(window, true);
-        
-        // StatusBar als fester grüner Balken
+        // Flags setzen
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        
+        // GRÜNE StatusBar mit WEISSEN Icons
         window.setStatusBarColor(Color.parseColor("#10b981"));
         
-        // Weisse Icons für grünen Hintergrund
-        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
-        if (controller != null) {
-            controller.setAppearanceLightStatusBars(false);
-        }
+        // System UI Visibility für weiße Icons
+        View decorView = window.getDecorView();
+        int flags = decorView.getSystemUiVisibility();
+        // Entferne LIGHT_STATUS_BAR Flag falls gesetzt
+        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        decorView.setSystemUiVisibility(flags);
     }
 }

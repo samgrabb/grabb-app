@@ -31,19 +31,23 @@ public class MainActivity extends BridgeActivity {
     private void setupStatusBarBeforeWebView() {
         Window window = getWindow();
         
-        // Flags setzen
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        // WICHTIG: Alle Transparenz-Flags ENTFERNEN
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         
-        // GRÜNE StatusBar mit SCHWARZEN Icons
+        // GRÜNE StatusBar zeichnen (undurchsichtig!)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.parseColor("#10b981"));
         
-        // SCHWARZE Icons (LIGHT_STATUS_BAR = dunkle Icons für hellen Hintergrund)
+        // WebView darf NICHT hinter StatusBar zeichnen
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(true);
+        }
+        
+        // SCHWARZE Icons für grünen Hintergrund
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View decorView = window.getDecorView();
-            int flags = decorView.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; // SETZEN, nicht entfernen!
-            decorView.setSystemUiVisibility(flags);
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
 }

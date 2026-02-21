@@ -35,14 +35,15 @@ public class MainActivity extends BridgeActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         
-        // GRÜNE StatusBar mit WEISSEN Icons
+        // GRÜNE StatusBar mit SCHWARZEN Icons
         window.setStatusBarColor(Color.parseColor("#10b981"));
         
-        // System UI Visibility für weiße Icons
-        View decorView = window.getDecorView();
-        int flags = decorView.getSystemUiVisibility();
-        // Entferne LIGHT_STATUS_BAR Flag falls gesetzt
-        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        decorView.setSystemUiVisibility(flags);
+        // SCHWARZE Icons (LIGHT_STATUS_BAR = dunkle Icons für hellen Hintergrund)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            View decorView = window.getDecorView();
+            int flags = decorView.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; // SETZEN, nicht entfernen!
+            decorView.setSystemUiVisibility(flags);
+        }
     }
 }

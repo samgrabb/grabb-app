@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import com.getcapacitor.BridgeActivity;
 import com.onesignal.OneSignal;
 import com.onesignal.debug.LogLevel;
@@ -18,28 +20,27 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // StatusBar konfigurieren
-        setupStatusBar();
+        // Edge-to-Edge aktivieren
+        setupEdgeToEdge();
         
         // OneSignal
         OneSignal.getDebug().setLogLevel(LogLevel.VERBOSE);
         OneSignal.initWithContext(this, ONESIGNAL_APP_ID);
     }
     
-    private void setupStatusBar() {
+    private void setupEdgeToEdge() {
         Window window = getWindow();
-        View decorView = window.getDecorView();
         
-        // StatusBar-Hintergrund zeichnen lassen
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // Edge-to-Edge Layout aktivieren
+        WindowCompat.setDecorFitsSystemWindows(window, false);
         
-        // GRÜNER Hintergrund für StatusBar (passend zu grabb.ch Header)
+        // StatusBar grün mit weißen Icons
         window.setStatusBarColor(Color.parseColor("#10b981"));
         
-        // WEISSE Icons (standard = helle Icons für dunklen Hintergrund)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            decorView.setSystemUiVisibility(0); // KEINE LIGHT_STATUS_BAR = weisse Icons
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller != null) {
+            // Weisse Icons (false = light icons für dunklen Hintergrund)
+            controller.setAppearanceLightStatusBars(false);
         }
     }
 }

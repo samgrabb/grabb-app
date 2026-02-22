@@ -1,6 +1,6 @@
 {
   "appId": "ch.grabb.app",
-  "appName": "grabb.ch",
+  "appName": "Grabb",
   "webDir": "www",
   "server": {
     "url": "https://grabb.ch",
